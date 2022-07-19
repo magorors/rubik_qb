@@ -1,4 +1,9 @@
-# Qbr
+#
+
+Demonstration project for a Yumi ABB Robot. The computer vision based
+solver is based on [kkomen's qbr](https://github.com/kkoomen/qbr).
+
+### Qbr
 
 Qbr, pronounced as Cuber, is a webcam-based 3x3x3 rubik's cube solver written in
 Python 3 and OpenCV.
