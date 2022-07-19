@@ -50,6 +50,7 @@ class Qbr:
         print(i18n.t('startingPosition'))
         print(i18n.t('moves', moves=length))
         print(i18n.t('solution', algorithm=algorithm))
+        print(algorithm.replace(' ', ','))
 
         if self.normalize:
             for index, notation in enumerate(algorithm.split(' ')):

@@ -260,24 +260,13 @@ class Webcam:
         self.result_state[center_color_name] = self.snapshot_state
         self.draw_snapshot_stickers(frame)
 
-    def get_freetype2_font(self):
-        """Get the freetype2 font, load it and return it."""
-        font_path = '{}/assets/arial-unicode-ms.ttf'.format(ROOT_DIR)
-        ft2 = cv2.freetype.createFreeType2()
-        ft2.loadFontData(font_path, 0)
-        return ft2
+
 
     def render_text(self, frame, text, pos, color=(255, 255, 255), size=TEXT_SIZE, bottomLeftOrigin=False):
-        """Render text with a shadow."""
-        ft2 = self.get_freetype2_font()
-        self.get_text_size(text)
-        ft2.putText(frame, text, pos, fontHeight=size, color=(0, 0, 0), thickness=2, line_type=cv2.LINE_AA, bottomLeftOrigin=bottomLeftOrigin)
-        ft2.putText(frame, text, pos, fontHeight=size, color=color, thickness=-1, line_type=cv2.LINE_AA, bottomLeftOrigin=bottomLeftOrigin)
-
-    def get_text_size(self, text, size=TEXT_SIZE):
-        """Get text size based on the default freetype2 loaded font."""
-        ft2 = self.get_freetype2_font()
-        return ft2.getTextSize(text, size, thickness=-1)
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        fontScale = 0.5
+        cv2.putText(frame, text, pos, font, fontScale, color=(0, 0, 0), thickness=2, lineType=cv2.LINE_AA)
+        print(text)
 
     def draw_scanned_sides(self, frame):
         """Display how many sides are scanned by the user."""
@@ -295,13 +284,16 @@ class Webcam:
             ]
             for index, text in enumerate(messages):
                 font_size
-                (textsize_width, textsize_height), _ = self.get_text_size(text, font_size)
+                # (textsize_width, textsize_height), _ = self.get_text_size(text, font_size)
+                textsize_height = 30
+                textsize_width = 40
                 y = y_offset + (textsize_height + 10) * index
                 self.render_text(frame, text, (int(self.width / 2 - textsize_width / 2), y), size=font_size)
         else:
             current_color = self.colors_to_calibrate[self.current_color_to_calibrate_index]
             text = i18n.t('currentCalibratingSide.{}'.format(current_color))
-            (textsize_width, textsize_height), _ = self.get_text_size(text, font_size)
+            # (textsize_width, textsize_height), _ = self.get_text_size(text, font_size)
+            textsize_width = 40
             self.render_text(frame, text, (int(self.width / 2 - textsize_width / 2), y_offset), size=font_size)
 
     def draw_calibrated_colors(self, frame):
@@ -343,9 +335,11 @@ class Webcam:
             i18n.t('language'),
             LOCALES[config.get_setting('locale')]
         )
-        (textsize_width, textsize_height), _ = self.get_text_size(text)
+        # (textsize_width, textsize_height), _ = self.get_text_size(text)
+        textsize_width = 40
         offset = 20
         self.render_text(frame, text, (self.width - textsize_width - offset, offset))
+        # self.render_text(frame, text, (self.width -  offset, offset))
 
     def draw_2d_cube_state(self, frame):
         """
