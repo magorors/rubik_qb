@@ -9,6 +9,7 @@ from video import Webcam
 import i18n
 import os
 from config import config
+from server import Server
 from constants import (
     ROOT_DIR,
     E_INCORRECTLY_SCANNED,
@@ -28,16 +29,15 @@ i18n.set('file_format', 'json')
 i18n.set('locale', locale)
 i18n.set('fallback', 'en')
 
-webcam = Webcam(rotate=False)
-
-class Qbr:
+class Rubik:
 
     def __init__(self, normalize):
         self.normalize = normalize
+        self.webcam = Webcam(rotate=False)
 
-    def run(self):
-        """The main function that will run the Qbr program."""
-        state = webcam.run()
+    def run(self, connection):
+        self.connection = connection
+        state = self.webcam.run(self.connection)
 
         # If we receive a number then it's an error code.
         if isinstance(state, int) and state > 0:
@@ -52,7 +52,9 @@ class Qbr:
         print(i18n.t('startingPosition'))
         print(i18n.t('moves', moves=length))
         print(i18n.t('solution', algorithm=algorithm))
-        print(algorithm.replace(' ', ','))
+        algorithm = algorithm.replace(' ', ',')
+        print(algorithm)
+        connection.sendall(bytes(algorithm, 'utf-8'))
 
         if self.normalize:
             for index, notation in enumerate(algorithm.split(' ')):
@@ -68,18 +70,19 @@ class Qbr:
             print('\033[0;33m[{}] {}'.format(i18n.t('error'), i18n.t('cubeAlreadySolved')))
         sys.exit(code)
 
-if __name__ == '__main__':
-    # Define the application arguments.
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-n',
-        '--normalize',
-        default=False,
-        action='store_true',
-        help='Shows the solution normalized. For example "R2" would be: \
-              "Turn the right side 180 degrees".'
-    )
-    args = parser.parse_args()
 
-    # Run Qbr with all arguments.
-    Qbr(args.normalize).run()
+# if __name__ == '__main__':
+#     # Define the application arguments.
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument(
+#         '-n',
+#         '--normalize',
+#         default=False,
+#         action='store_true',
+#         help='Shows the solution normalized. For example "R2" would be: \
+#               "Turn the right side 180 degrees".'
+#     )
+#     args = parser.parse_args()
+
+#     # Run Qbr with all arguments.
+#     Rubik(args.normalize).run()

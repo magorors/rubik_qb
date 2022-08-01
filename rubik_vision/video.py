@@ -3,6 +3,7 @@
 
 import cv2
 from colordetection import color_detector
+import time
 from config import config
 from helpers import get_next_locale
 import i18n
@@ -46,7 +47,7 @@ class Webcam:
 
         self.cam.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         self.cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-        
+
         if self.rotate == True:
             self.width = int(self.cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
             self.height = int(self.cam.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -446,12 +447,13 @@ class Webcam:
                     return False
         return True
 
-    def run(self):
+    def run(self, server_connection):
         """
         Open up the webcam and present the user with the Qbr user interface.
 
         Returns a string of the scanned state in rubik's cube notation.
         """
+        ran_range = range(1,6)
         while True:
             _, frame = self.cam.read()
             if self.rotate == True:
@@ -461,6 +463,21 @@ class Webcam:
             # Quit on escape.
             if key == 27:
                 break
+
+            try:
+                data = server_connection.recv(1024)
+                if int(data.decode('utf-8')) in  ran_range:
+                    print(data.decode('utf-8'))
+                    # data = int(data)
+                    data = bytes(data)
+                    if not self.calibrate_mode:
+                        self.update_snapshot_state(frame)
+                        server_connection.sendall(data)
+                    time.sleep(0.1)
+            except (OSError, ValueError) as error:
+                pass
+            else:
+                pass
 
             if not self.calibrate_mode:
                 # Update the snapshot when space bar is pressed.
