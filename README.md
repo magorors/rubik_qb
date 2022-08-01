@@ -1,7 +1,8 @@
 #
 
-Demonstration project for a Yumi ABB Robot. The computer vision based
-solver is based on [kkomen's qbr](https://github.com/kkoomen/qbr).
+Demonstration project for a Yumi ABB Robot. The CV based solver in 
+[kkomen's qbr](https://github.com/kkoomen/qbr) work, having introduced
+some minor changes to the initial project. 
 
 ### Qbr
 
