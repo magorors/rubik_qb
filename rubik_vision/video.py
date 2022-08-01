@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# vim: fenc=utf-8 ts=4 sw=4 et
 
 import cv2
 from colordetection import color_detector
@@ -449,6 +448,7 @@ class Webcam:
         """
         while True:
             _, frame = self.cam.read()
+            frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
             key = cv2.waitKey(10) & 0xff
 
             # Quit on escape.
@@ -459,12 +459,6 @@ class Webcam:
                 # Update the snapshot when space bar is pressed.
                 if key == 32:
                     self.update_snapshot_state(frame)
-
-                # Switch to another language.
-                if key == ord(SWITCH_LANGUAGE_KEY):
-                    next_locale = get_next_locale(config.get_setting('locale'))
-                    config.set_setting('locale', next_locale)
-                    i18n.set('locale', next_locale)
 
             # Toggle calibrate mode.
             if key == ord(CALIBRATE_MODE_KEY):
