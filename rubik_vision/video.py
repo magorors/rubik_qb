@@ -27,7 +27,7 @@ from constants import (
 
 class Webcam:
 
-    def __init__(self):
+    def __init__(self, rotate=True):
         print('Starting webcam... (this might take a while, please be patient)')
         self.cam = cv2.VideoCapture(0)
         print('Webcam successfully started')
@@ -35,6 +35,7 @@ class Webcam:
         self.colors_to_calibrate = ['green', 'red', 'blue', 'orange', 'white', 'yellow']
         self.average_sticker_colors = {}
         self.result_state = {}
+        self.rotate = rotate
 
         self.snapshot_state = [(255,255,255), (255,255,255), (255,255,255),
                                (255,255,255), (255,255,255), (255,255,255),
@@ -45,8 +46,13 @@ class Webcam:
 
         self.cam.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         self.cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-        self.width = int(self.cam.get(cv2.CAP_PROP_FRAME_WIDTH))
-        self.height = int(self.cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        
+        if self.rotate == True:
+            self.width = int(self.cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            self.height = int(self.cam.get(cv2.CAP_PROP_FRAME_WIDTH))
+        else:
+            self.width = int(self.cam.get(cv2.CAP_PROP_FRAME_WIDTH))
+            self.height = int(self.cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
         self.calibrate_mode = False
         self.calibrated_colors = {}
@@ -448,7 +454,8 @@ class Webcam:
         """
         while True:
             _, frame = self.cam.read()
-            frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+            if self.rotate == True:
+                frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
             key = cv2.waitKey(10) & 0xff
 
             # Quit on escape.
@@ -515,4 +522,4 @@ class Webcam:
         return self.get_result_notation()
 
 
-webcam = Webcam()
+# webcam = Webcam(rotate=False)

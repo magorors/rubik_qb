@@ -5,7 +5,7 @@
 import sys
 import kociemba
 import argparse
-from video import webcam
+from video import Webcam
 import i18n
 import os
 from config import config
@@ -27,6 +27,8 @@ i18n.set('filename_format', '{locale}.{format}')
 i18n.set('file_format', 'json')
 i18n.set('locale', locale)
 i18n.set('fallback', 'en')
+
+webcam = Webcam(rotate=False)
 
 class Qbr:
 
