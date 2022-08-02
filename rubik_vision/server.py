@@ -4,7 +4,7 @@ import rubik
 
 class Server():
 
-    def __init__(self, HOST="127.0.0.1", PORT=1253):
+    def __init__(self, HOST="192.168.10.100", PORT=4597):
         self.HOST = HOST
         self.PORT = PORT
 
@@ -19,7 +19,7 @@ class Server():
             conn.setblocking(0)
             self.rubik = rubik.Rubik(False).run(conn)
 
-        return None
+        self.sock.close()
 
 
 if __name__ == '__main__':

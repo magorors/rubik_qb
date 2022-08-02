@@ -30,7 +30,7 @@ class Webcam:
 
     def __init__(self, rotate=True):
         print('Starting webcam... (this might take a while, please be patient)')
-        self.cam = cv2.VideoCapture(0)
+        self.cam = cv2.VideoCapture(4)
         print('Webcam successfully started')
 
         self.colors_to_calibrate = ['green', 'red', 'blue', 'orange', 'white', 'yellow']
@@ -272,7 +272,7 @@ class Webcam:
         font = cv2.FONT_HERSHEY_SIMPLEX
         fontScale = 0.5
         cv2.putText(frame, text, pos, font, fontScale, color=(0, 0, 0), thickness=2, lineType=cv2.LINE_AA)
-        print(text)
+        # print(text)
 
     def draw_scanned_sides(self, frame):
         """Display how many sides are scanned by the user."""
@@ -457,7 +457,7 @@ class Webcam:
         while True:
             _, frame = self.cam.read()
             if self.rotate == True:
-                frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+                frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
             key = cv2.waitKey(10) & 0xff
 
             # Quit on escape.
@@ -511,6 +511,9 @@ class Webcam:
                     if self.done_calibrating:
                         color_detector.set_cube_color_pallete(self.calibrated_colors)
                         config.set_setting(CUBE_PALETTE, color_detector.cube_color_palette)
+                        for i in range(20):
+                            print(self.calibrated_colors)
+                            print(CUBE_PALETTE)
 
             if self.calibrate_mode:
                 self.draw_current_color_to_calibrate(frame)

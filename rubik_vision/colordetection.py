@@ -12,13 +12,15 @@ class ColorDetection:
 
     def __init__(self):
         self.prominent_color_palette = {
-            'red'   : (0, 0, 255),
-            'orange': (0, 165, 255),
-            'blue'  : (255, 0, 0),
-            'green' : (0, 255, 0),
-            'white' : (255, 255, 255),
-            'yellow': (0, 255, 255)
-        }
+            'green': (82.31019, 165.62962, 140.80093), 
+          'red': (37.380955, 37.380955, 205.10715),
+           'blue': (157.73334, 132.34375, 18.439585),
+            'orange': (58.5875, 97.841675, 238.1),
+             'white': (206.85779, 202.94667, 205.00446), 
+             'yellow': (100.08572, 167.16072, 237.075)}
+        
+
+        
 
         # Load colors from config and convert the list -> tuple.
         self.cube_color_palette = config.get_setting(
@@ -48,7 +50,7 @@ class ColorDetection:
         n_colors = 1
         criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 200, .1)
         flags = cv2.KMEANS_RANDOM_CENTERS
-        _, labels, palette = cv2.kmeans(pixels, n_colors, None, criteria, 10, flags)
+        _, labels, palette = cv2.kmeans(pixels, n_colors, None, criteria, 2, flags)
         _, counts = np.unique(labels, return_counts=True)
         dominant = palette[np.argmax(counts)]
         return tuple(dominant)
