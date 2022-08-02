@@ -4,7 +4,7 @@ import rubik
 
 class Server():
 
-    def __init__(self, HOST="192.168.10.100", PORT=4597):
+    def __init__(self, HOST="192.168.10.100", PORT=4587):
         self.HOST = HOST
         self.PORT = PORT
 
