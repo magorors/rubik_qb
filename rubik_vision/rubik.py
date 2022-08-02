@@ -33,7 +33,7 @@ class Rubik:
 
     def __init__(self, normalize):
         self.normalize = normalize
-        self.webcam = Webcam(rotate=False)
+        self.webcam = Webcam(rotate=True)
 
     def run(self, connection):
         self.connection = connection

@@ -30,7 +30,7 @@ class Webcam:
 
     def __init__(self, rotate=True):
         print('Starting webcam... (this might take a while, please be patient)')
-        self.cam = cv2.VideoCapture(0)
+        self.cam = cv2.VideoCapture(4)
         print('Webcam successfully started')
 
         self.colors_to_calibrate = ['green', 'red', 'blue', 'orange', 'white', 'yellow']
@@ -457,7 +457,7 @@ class Webcam:
         while True:
             _, frame = self.cam.read()
             if self.rotate == True:
-                frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+                frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
             key = cv2.waitKey(10) & 0xff
 
             # Quit on escape.
